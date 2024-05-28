@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CoreDemo.Controllers
 {
+
 	public class ContactController : Controller
 	{
 		ContactManager cm=new ContactManager(new EfContactRepository());

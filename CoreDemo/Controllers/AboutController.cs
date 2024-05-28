@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CoreDemo.Controllers
 {
+
 	public class AboutController : Controller
 	{
 		AboutManager abm=new AboutManager(new EfAboutRepository());	

@@ -7,7 +7,7 @@ using EntityLayer.Concrete;
 
 namespace BusinessLayer.Abstract
 {
-	internal interface IBlogService :IGenericService<Blog>
+	public interface IBlogService :IGenericService<Blog>
 	{
 		//void BlogAdd(Blog blog);
 		//void BlogDelete(Blog blog);
