@@ -2,6 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BlogApiDemo.DataAccessLayer;
+using CoreDemo.Controllers;
+using DataAccessLayer.Concrete;
+using EntityLayer.Concrete;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -25,6 +29,15 @@ namespace CoreDemo
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<Context>();
+            services.AddIdentity<AppUser,AppRole>(x=>
+            {
+                x.Password.RequireUppercase = false;
+                x.Password.RequireNonAlphanumeric = false;
+
+            }).AddEntityFrameworkStores<Context>();
+
+            services.AddControllersWithViews();
             services.AddControllersWithViews();
 
            // services.AddSession(); // oturum için
@@ -50,7 +63,7 @@ namespace CoreDemo
             services.ConfigureApplicationCookie(options =>
             {
                 options.Cookie.HttpOnly = true;
-                options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(100); // 100 dk oturum açýk kalma süresi
                 options.LoginPath = "/Login/Index";
                 options.SlidingExpiration = true;
             });

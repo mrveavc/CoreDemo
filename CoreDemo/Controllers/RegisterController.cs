@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CoreDemo.Controllers
 {
+
 	public class RegisterController : Controller
 	{
 		WriterManager wm =new WriterManager(new EfWriterRepository());

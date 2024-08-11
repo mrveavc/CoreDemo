@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 namespace BlogApiDemo.DataAccessLayer
 {
-    public class Context : DbContext
+    public class ApiContext : DbContext
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

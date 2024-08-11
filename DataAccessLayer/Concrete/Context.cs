@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DataAccessLayer.Concrete
 {
-    public class Context:IdentityDbContext<AppUser>
+    public class Context:IdentityDbContext<AppUser,AppRole,int>
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -29,6 +29,13 @@ namespace DataAccessLayer.Concrete
                 .HasForeignKey(z => z.ReceiverID)
                 .OnDelete(DeleteBehavior.ClientSetNull);
             base.OnModelCreating(modelBuilder);
+        }
+        public async Task<List<Writer>> GetWritersAsync()
+        {
+            using (var context = new Context())
+            {
+                return await context.Writers.ToListAsync();
+            }
         }
         public DbSet<About> Abouts {  get; set; }
         public DbSet<Blog> Blogs { get; set; }  

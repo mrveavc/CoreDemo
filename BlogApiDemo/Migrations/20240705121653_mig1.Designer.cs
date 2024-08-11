@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BlogApiDemo.Migrations
 {
-    [DbContext(typeof(Context))]
+    [DbContext(typeof(ApiContext))]
     [Migration("20240705121653_mig1")]
     partial class mig1
     {

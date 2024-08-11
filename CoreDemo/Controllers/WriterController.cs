@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
+using System.Threading.Tasks;
 using BusinessLayer.Concrete;
 using BusinessLayer.ValidationRules;
 using CoreDemo.Models;
@@ -10,14 +11,22 @@ using DataAccessLayer.EntityFramework;
 using EntityLayer.Concrete;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CoreDemo.Controllers
 {
-	[Authorize] //Tümüne etki eder.
 	public class WriterController : Controller
 	{
 		WriterManager wm=new WriterManager(new EfWriterRepository());
+		private readonly UserManager<AppUser> _userManager;
+        UserManager userManager = new UserManager(new EfUserRepository());
+
+        public WriterController(UserManager<AppUser> userManager)
+        {
+            _userManager = userManager;
+        }
+
         [Authorize]
         public IActionResult Index()
 		{
@@ -31,7 +40,6 @@ namespace CoreDemo.Controllers
 		public IActionResult WriterProfile(){
 			return View();
 		}
-	//	[Authorize]
 		public IActionResult WriterMail()
 		{
 			return View();
@@ -53,46 +61,65 @@ namespace CoreDemo.Controllers
         {
             return PartialView();
         }
-		//[AllowAnonymous]
 		[HttpGet]
-		public IActionResult  WriterEditProfile()
+		public async Task<IActionResult>  WriterEditProfile()
 		{
-            var usermail = User.Identity.Name;
-            Context c = new Context();
-            var writerID = c.Writers.Where(x => x.WriterMail == usermail).Select(y => y.WriterID).FirstOrDefault();
-            var writervalues = wm.TGetById(writerID);
-			return View(writervalues);
+            // Context c = new Context();
+            // var username = User.Identity.Name;
+            //var usermail=c.Users.Where(x=>x.UserName==username).Select(y=>y.Email).FirstOrDefault();
+            //var writerID = c.Writers.Where(x => x.WriterMail == usermail).Select(y => y.WriterID).FirstOrDefault();
+            //var writervalues = wm.TGetById(writerID);
+            //return View(writervalues);
+            //var id = c.Users.Where(x => x.Email == usermail).Select(x => x.Id).FirstOrDefault();
+            //var values = userManager.TGetById(id);
+            //return View(values);
+
+            var values = await _userManager.FindByNameAsync(User.Identity.Name);
+            UserUpdateViewModel model= new UserUpdateViewModel();
+            model.mail = values.Email;
+            model.namesurname = values.NameSurname;
+            model.imageurl = values.ImageUrl;
+            model.username = values.UserName;
+            return View(model);
 		}
-        //[AllowAnonymous]
         [HttpPost]
-        public IActionResult WriterEditProfile(Writer p)
+        public async Task<IActionResult> WriterEditProfile(UserUpdateViewModel model)
         {
-            var pas1 = Request.Form["pass1"];
-            var pas2 = Request.Form["pass2"];
-            if (pas1 == pas2)
-            {
-                p.WriterPassword = pas2;
-                WriterValidator validationRules = new WriterValidator();
-                ValidationResult result = validationRules.Validate(p);
-                if (result.IsValid)
-                {
-                    wm.TUpdate(p);
-                    return RedirectToAction("Index", "Dashboard");
-                }
-                else
-                {
-                    foreach (var item in result.Errors)
-                    {
-                        ModelState.AddModelError(item.PropertyName, item.ErrorMessage);
-                    }
-                }
-            }
-            else
-            {
-                ViewBag.hata = "Girdiğiniz Parolalar Uyuşmuyor!";
-            }
-            return View();
+            var values = await _userManager.FindByNameAsync(User.Identity.Name);
+            values.NameSurname=model.namesurname;
+            values.ImageUrl=model.imageurl;
+            values.Email = model.mail;
+            values.PasswordHash = _userManager.PasswordHasher.HashPassword(values,model.password);
+            var result = await  _userManager.UpdateAsync(values);
+
+            return RedirectToAction("Index","Dashboard");
+            //var pas1 = Request.Form["pass1"];
+            //var pas2 = Request.Form["pass2"];
+            //if (pas1 == pas2)
+            //{
+            //    p.WriterPassword = pas2;
+            //    WriterValidator validationRules = new WriterValidator();
+            //    ValidationResult result = validationRules.Validate(p);
+            //    if (result.IsValid)
+            //    {
+            //        wm.TUpdate(p);
+            //        return RedirectToAction("Index", "Dashboard");
+            //    }
+            //    else
+            //    {
+            //        foreach (var item in result.Errors)
+            //        {
+            //            ModelState.AddModelError(item.PropertyName, item.ErrorMessage);
+            //        }
+            //    }
+            //}
+            //else
+            //{
+            //    ViewBag.hata = "Girdiğiniz Parolalar Uyuşmuyor!";
+            //}
+           //return View();
         }
+
         [AllowAnonymous]
         [HttpGet]
         public IActionResult WriterAdd()
@@ -124,5 +151,6 @@ namespace CoreDemo.Controllers
             return RedirectToAction("Index","Dashboard");
 
         }
+       
     }
 }

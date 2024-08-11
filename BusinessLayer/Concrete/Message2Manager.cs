@@ -21,7 +21,7 @@ namespace BusinessLayer.Concrete
         public List<Message2> GetInboxListByWriter(int id)
         {
             //  return _message2Dal.GetListAll(x => x.ReceiverID == id); // id ye göre mesajlar geliyor
-            return _message2Dal.GetListWithMessageByWriter(id);   // EfMessage2Repository da mesajı gönderene erişiyor.
+            return _message2Dal.GetInboxListWithMessageByWriter(id);   // EfMessage2Repository da mesajı gönderene erişiyor.
 
         }
 
@@ -30,9 +30,14 @@ namespace BusinessLayer.Concrete
           return _message2Dal.GetListAll();
         }
 
+        public List<Message2> GetSendboxListByWriter(int id)
+        {
+            return _message2Dal.GetSendBoxListWithMessageByWriter(id);   // EfMessage2Repository da mesajı gönderene erişiyor.
+        }
+
         public void TAdd(Message2 t)
         {
-            throw new NotImplementedException();
+            _message2Dal.Insert(t);
         }
 
         public void TDelete(Message2 t)

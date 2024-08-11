@@ -13,7 +13,7 @@ namespace BlogApiDemo.Controllers
 
         public IActionResult EmployeeList()
         {
-            using var c= new Context();
+            using var c= new ApiContext();
             var values = c.Employees.ToList();
             return Ok(values);
 
@@ -21,7 +21,7 @@ namespace BlogApiDemo.Controllers
         [HttpPost]
         public IActionResult EmployeeAdd(Employee employee)
         {   
-            using var c= new Context(); 
+            using var c= new ApiContext(); 
             c.Add(employee);
             c.SaveChanges();
             return Ok();
@@ -29,7 +29,7 @@ namespace BlogApiDemo.Controllers
         [HttpGet("{id}")]
         public IActionResult EmployeeGet(int id)
         {
-            using var c = new Context();
+            using var c = new ApiContext();
             var employee = c.Employees.Find(id);
             if (employee == null)
             {
@@ -44,7 +44,7 @@ namespace BlogApiDemo.Controllers
         [HttpDelete("{id}")]
         public IActionResult EmployeeDelete(int id)
         {
-            using var c= new Context();
+            using var c= new ApiContext();
             var employee=c.Employees.Find(id);
             if (employee == null)
             {
@@ -62,7 +62,7 @@ namespace BlogApiDemo.Controllers
         [HttpPut]
         public IActionResult EmployeeUpdate(Employee employee)
         {
-            using var c= new Context();
+            using var c= new ApiContext();
             var emp = c.Find<Employee>(employee.ID);
             if (emp == null)
             {
