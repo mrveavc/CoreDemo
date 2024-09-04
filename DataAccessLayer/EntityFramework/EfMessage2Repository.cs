@@ -30,7 +30,7 @@ namespace DataAccessLayer.EntityFramework
                                                                                                         // oturum açan kişinin id'sine mesaj gönderen kişilerin bilgilerine ulaşılıyor. 
             }
         }
+       
 
-     
     }
 }
