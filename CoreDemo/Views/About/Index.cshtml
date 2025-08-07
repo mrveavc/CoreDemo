@@ -66,9 +66,9 @@
 						@await Html.PartialAsync("~/Views/About/SocialMediaAbout.cshtml")
 
 						<div class="tech-btm">
-							<h4>Son Postlar</h4>
+							
 
-							@await Component.InvokeAsync("WriterLastBlog")
+							@await Component.InvokeAsync("BlogLast3Post")
 
 						</div>
 					</div>

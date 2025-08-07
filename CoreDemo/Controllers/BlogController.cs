@@ -34,7 +34,9 @@ namespace CoreDemo.Controllers
         public IActionResult BlogReadAll(int id)
         {
             ViewBag.i = id;
-            var values = bm.GetBlogById(id);
+			var writerID = c.Blogs.Where(x => x.BlogID == id).Select(y => y.WriterID).FirstOrDefault(); 
+            ViewBag.a= writerID;
+			var values = bm.GetBlogById(id);
 
             return View(values);
 

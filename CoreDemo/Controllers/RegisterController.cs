@@ -22,7 +22,7 @@ namespace CoreDemo.Controllers
 		public IActionResult Index(Writer p)
 		{
 			WriterValidator wv = new WriterValidator();
-			ValidationResult result = wv.Validate(p);
+			ValidationResult result = wv.Validate(p); // parametreden gelen değerleri kontrol eder
 			if (result.IsValid)
 			{
 				p.WriterStatus = true;

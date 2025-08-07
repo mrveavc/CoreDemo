@@ -57,6 +57,10 @@
 				@* @await Html.PartialAsync("~/Views/Comment/CommentListByBlog.cshtml") *@
 
 
+				@{
+					ViewBag.BlogId = ViewBag.i;
+				}
+
 				@await Html.PartialAsync("~/Views/Comment/PartialAddComment.cshtml")
 					
 				</div>
@@ -74,7 +78,7 @@
 
 					@await Html.PartialAsync("~/Views/NewsLetter/SubscribeMail.cshtml")
 					@await  Component.InvokeAsync("CategoryList")
-					@await Component.InvokeAsync("WriterLastBlog")
+					@await Component.InvokeAsync("WriterLastBlog", new { id = ViewBag.a })
 						<div class="single-gd my-5 tech-btm">
 							<h4>Our Progress</h4>
 							<div class="progress">

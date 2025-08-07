@@ -8,26 +8,35 @@
 
 	@foreach(var item in Model)
 	{
-		
-	
-	<div class="blog-grids row mb-3">
-		<div class="col-md-5 blog-grid-left">
+
+		@if (@ViewBag.i !=item.BlogID)
+		{
+		<div class="blog-grids row mb-3">
+			<div class="col-md-5 blog-grid-left">
 			<a href="single.html">
 				<img src="@item.BlogImage" class="img-fluid" alt="">
 			</a>
-		</div>
-		<div class="col-md-7 blog-grid-right">
-
-			<h5>
-				<a href="single.html">@item.BlogTitle </a>
-			</h5>
-			<div class="sub-meta">
-				<span>
-						<i class="far fa-clock"></i> @(((DateTime)item.BlogCreateDate).ToString("dd/MM/yyyy"))
-				</span>
 			</div>
-		</div>
+			<div class="col-md-7 blog-grid-right">
 
-		</div>
+				<h5>
+					<a href="single.html">@item.BlogTitle </a>
+				</h5>
+				<div class="sub-meta">
+					<span>
+						<i class="far fa-clock"></i> @(((DateTime)item.BlogCreateDate).ToString("dd/MM/yyyy"))
+					</span>
+				</div>
+			</div>
+
+			</div>
+
+		}
+		@if (@ViewBag.i ==item.BlogID && @Model.Count == 1)
+		{
+			<div>Yazarın Başka Bir Yazısı Yok</div>
+
+		}
+
 	}
 </div>
