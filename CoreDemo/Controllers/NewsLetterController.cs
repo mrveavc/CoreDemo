@@ -21,7 +21,7 @@ namespace CoreDemo.Controllers
 		public IActionResult SubscribeMail(NewsLetter p)
 		{
 			p.MailStatus = true;
-			nm.AddNewsLetter(p);
+			nm.TAdd(p);
 			return PartialView();
 			//p.MailStatus = true;
 			//nl.Insert(p);

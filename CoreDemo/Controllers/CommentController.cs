@@ -26,7 +26,7 @@ namespace CoreDemo.Controllers
 		{
 			p.CommentDate=DateTime.Parse(DateTime.Now.ToShortDateString());
 			p.CommentStatus = true;
-			cm.CommentAdd(p);
+			cm.TAdd(p);
 			return PartialView();
 		}
 		public PartialViewResult CommentListByBlog(int id)

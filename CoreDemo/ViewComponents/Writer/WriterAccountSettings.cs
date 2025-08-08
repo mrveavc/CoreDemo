@@ -11,6 +11,11 @@ namespace CoreDemo.ViewComponents.Writer
         public IViewComponentResult Invoke()
         {
             var username = User.Identity.Name;
+
+            Context c = new Context();
+            var ImageUrl = c.Users.Where(x => x.UserName == username).Select(y => y.ImageUrl).FirstOrDefault();
+
+            ViewBag.i = ImageUrl;
             ViewBag.v = username;
 
             return View();

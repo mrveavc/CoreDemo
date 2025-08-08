@@ -87,6 +87,7 @@ namespace CoreDemo.Controllers
         {
             var values = await _userManager.FindByNameAsync(User.Identity.Name);
             values.NameSurname=model.namesurname;
+            values.UserName=model.username;
             values.ImageUrl=model.imageurl;
             values.Email = model.mail;
             values.PasswordHash = _userManager.PasswordHasher.HashPassword(values,model.password);

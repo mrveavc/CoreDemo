@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Security.Claims;
 using BusinessLayer.Concrete;
 using BusinessLayer.ValidationRules;
 using DataAccessLayer.Concrete;
 using DataAccessLayer.EntityFramework;
+using DocumentFormat.OpenXml.Office2010.Excel;
 using EntityLayer.Concrete;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Authorization;
@@ -71,7 +73,14 @@ namespace CoreDemo.Controllers
             var writerID = c.Writers.Where(x => x.WriterMail == usermail).Select(y => y.WriterID).FirstOrDefault();
             BlogValidator bv = new BlogValidator();
                 ValidationResult result = bv.Validate(p);
-                if (result.IsValid)
+            List<SelectListItem> categoryValues = (from x in cm.GetList()
+                                                   select new SelectListItem
+                                                   {
+                                                       Text = x.CategoryName,
+                                                       Value = x.CategoryID.ToString()
+                                                   }).ToList();
+            ViewBag.cv = categoryValues;
+            if (result.IsValid)
                 {
                     p.BlogStatus = true;
                     p.BlogCreateDate = DateTime.Parse(DateTime.Now.ToShortDateString());
@@ -114,13 +123,17 @@ namespace CoreDemo.Controllers
         [HttpPost]
         public IActionResult EditBlog(Blog p)
         {
+            var blogvalue = bm.TGetById(p.BlogID);
             var username = User.Identity.Name;
             var usermail = c.Users.Where(x => x.UserName == username).Select(y => y.Email).FirstOrDefault();
-            var writerID = c.Writers.Where(x => x.WriterMail == usermail).Select(y => y.WriterID).FirstOrDefault();
+            //var writerID = c.Writers.Where(x => x.WriterMail == usermail).Select(y => y.WriterID).FirstOrDefault();
 
-            p.WriterID = writerID;
-            p.BlogCreateDate = DateTime.Parse(DateTime.Now.ToString());
-            p.BlogStatus = true;
+            //p.WriterID = writerID;
+            p.WriterID = blogvalue.WriterID; //mevcut yazar id'si
+            //p.BlogCreateDate = DateTime.Parse(DateTime.Now.ToString());
+            p.BlogCreateDate = DateTime.Parse(blogvalue.BlogCreateDate.ToShortDateString()); //güncelleme sonrası tarih değişmiyor.
+            //p.BlogStatus = true;
+            p.BlogStatus = blogvalue.BlogStatus; //mevcut status
             bm.TUpdate(p);
             return RedirectToAction("BlogListByWriter");
         }
