@@ -42,7 +42,8 @@
 <div class="comment-top">
     <h4>Yorum Yap</h4>
     <div class="comment-bottom">
-<form id="commentForm" method="post" action="/Comment/PartialAddComment/">
+@* <form id="commentForm" method="post" action="/Comment/PartialAddComment/"> *@
+<form id="commentForm" method="post" asp-action="PartialAddComment" asp-controller="Comment">
     <input type="hidden" id="blogID" name="BlogID" value="@ViewBag.BlogId" />
     <input class="form-control" type="text" id="txtusername" name="CommentUserName" placeholder="Adınız Soyadınız" required="">
     <input class="form-control" type="text" id="txttitle" name="CommentTitle" placeholder="Konu" required="">

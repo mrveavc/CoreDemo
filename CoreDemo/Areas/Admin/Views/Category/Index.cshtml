@@ -9,6 +9,9 @@
     Layout = "~/Views/Shared/AdminLayout.cshtml";
 }
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <h2>Kategori Listesi</h2>
 <table class="table table-bordered">
 <tr>
@@ -22,17 +25,59 @@
 @foreach(var item in Model)
 {
     <tr>
-    <td>@item.CategoryID</td>
-    <td>@item.CategoryName</td>
-    <td><a href="#" class="btn btn-danger">Pasif Yap</a></td>
-    <td><a href="#" class="btn btn-warning">Aktif Yap</a></td>
-    <td><a href="#" class="btn btn-success">Düzenle</a></td>
-    <td><a href="/Admin/Category/CategoryDelete/@item.CategoryID" id="DeleteBtn" onclick="return confirm('Silmek istediğinize emin misiniz?');" class="btn btn-success">Sil</a></td>
+        <td>@item.CategoryID</td>
+        <td>@item.CategoryName</td>
+            @if (item.CategoryStatus)
+            {
+                <!-- Kategori aktifse -->
+                <td><a href="/Admin/Category/ChangeStatus/@item.CategoryID?status=false" class="btn btn-danger">Pasif Yap</a></td>
+                <td><a href="#" class="btn btn-info disabled" tabindex="-1" aria-disabled="true">Aktif Yap</a></td>
+            }
+            else
+            {
+                <!-- Kategori pasifse -->
+                <td><a href="#" class="btn btn-danger disabled" tabindex="-1" aria-disabled="true">Pasif Yap</a></td>
+                <td><a href="/Admin/Category/ChangeStatus/@item.CategoryID?status=true" class="btn btn-info">Aktif Yap</a></td>
+            }
+        @* <td><a href="#" class="btn btn-danger">Pasif Yap</a></td>
+            <td><a href="#" class="btn btn-info disabled" tabindex="-1" aria-disabled="true">Aktif Yap</a></td> *@
+            <td><a href="/Admin/Category/CategoryEdit/@item.CategoryID" class="btn btn-success">Düzenle</a></td>
+        @* <td><a href="/Admin/Category/CategoryDelete/@item.CategoryID" id="DeleteBtn" onclick="return confirm('Silmek istediğinize emin misiniz?');" class="btn btn-success">Sil</a></td> *@
+        <td>
+           <button class="btn btn-danger delete-btn" data-id="@item.CategoryID">Sil</button>
+        </td>
     </tr>
 	}
 </table>
-<a href="/Admin/Category/AddCategory/" class="btn btn-primary">Yeni Kategori</a>
+<a href="/Admin/Category/CategoryAdd/" class="btn btn-primary">Yeni Kategori</a>
 <br />
 
 <br />
 @Html.PagedListPager((IPagedList)Model,page=>Url.Action("Index",new { page }))
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll(".delete-btn").forEach(function (btn) {
+            btn.addEventListener("click", function () {
+                var categoryId = this.getAttribute("data-id");
+
+                Swal.fire({
+                    title: 'Emin misiniz?',
+                    text: "Bu kategoriyi silmek istediğinize emin misiniz?",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Evet',
+                    cancelButtonText: 'Vazgeç'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = '/Admin/Category/CategoryDelete/' + categoryId;
+                    }
+                });
+            });
+        });
+    });
+</script>
+
+

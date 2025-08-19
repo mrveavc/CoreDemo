@@ -1,4 +1,6 @@
-﻿namespace CoreDemo.Models
+﻿using Microsoft.AspNetCore.Http;
+
+namespace CoreDemo.Models
 {
     public class UserUpdateViewModel
     {
@@ -7,5 +9,6 @@
         public string mail { get; set; }
         public string imageurl { get; set; }
         public string password { get; set; }
+        public IFormFile Image { get; set; }
     }
 }

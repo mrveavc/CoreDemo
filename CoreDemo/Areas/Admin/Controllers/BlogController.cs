@@ -17,10 +17,10 @@ namespace CoreDemo.Areas.Admin.Controllers
             using (var workbook = new XLWorkbook())
             {
                 var worksheet = workbook.Worksheets.Add("Blog Listesi");
-                worksheet.Cell(1, 1).Value = "Blog ID";
+                worksheet.Cell(1, 1).Value = "Blog ID"; //1.satır 1.sütun
                 worksheet.Cell(1, 2).Value = "Blog Adı";
 
-                int BlogRowCount = 2;
+                int BlogRowCount = 2; //veriler 2.satırdan itibaren yazılsın
                 foreach (var item in GetBlogList())
                 {
                     worksheet.Cell(BlogRowCount, 1).Value = item.ID;

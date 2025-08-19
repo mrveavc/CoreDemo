@@ -13,10 +13,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CoreDemo.Controllers
 {
-	[AllowAnonymous]
-	public class LoginController : Controller
-	{
-		private readonly SignInManager<AppUser> _signInManager;
+    [AllowAnonymous]
+    public class LoginController : Controller
+    {
+        private readonly SignInManager<AppUser> _signInManager;
 
         public LoginController(SignInManager<AppUser> signInManager)
         {
@@ -24,35 +24,40 @@ namespace CoreDemo.Controllers
         }
 
         public IActionResult Index()
-		{
-			return View();
-		}
-		[HttpPost]
-		public async Task<IActionResult> Index(UserSignInViewModel p)
-		{
+        {
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> Index(UserSignInViewModel p)
+        {
             if (ModelState.IsValid)
-			{
-                var result = await _signInManager.PasswordSignInAsync(p.userName, p.password, false, true);
+            {
+                var result = await _signInManager.PasswordSignInAsync(p.userName, p.password, false, true);//çerezlerde hatırlasın mı =false , şifre 5 kere yanlış girilirse belli bir süre erişim engellenecek =true
                 if (result.Succeeded)
                 {
                     return RedirectToAction("Index", "Dashboard");
 
                 }
-				else
-				{
+                else
+                {
                     return RedirectToAction("Index", "Login");
                 }
 
 
             }
-			return View();
+            return View();
 
 
         }
         public async Task<IActionResult> LogOut()
         {
             await _signInManager.SignOutAsync();
-            return RedirectToAction("Index","Login");
+            return RedirectToAction("Index", "Login");
+        }
+        public IActionResult AccessDenied()
+        {
+
+            return View();
         }
         //[HttpPost]
         //public async Task<IActionResult> Index(Writer p)

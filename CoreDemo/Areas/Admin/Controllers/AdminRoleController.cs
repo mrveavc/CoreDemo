@@ -1,15 +1,19 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ClosedXML;
 using CoreDemo.Areas.Admin.Models;
 using DocumentFormat.OpenXml.Office2010.ExcelAc;
 using EntityLayer.Concrete;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CoreDemo.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles ="Admin")] //Admin rolüne sahip olanlar sadece bu seçeneğe gidebilecek
+    //[Authorize(Roles ="Admin,Moderator")]
     public class AdminRoleController : Controller
     {
         public readonly RoleManager<AppRole> _roleManager;
@@ -117,6 +121,24 @@ namespace CoreDemo.Areas.Admin.Controllers
             }
             return View(model);
         }
+        [HttpPost]
+        public async Task<IActionResult> AssignRole(List<RoleAssignViewModel> model)
+        {
+            var userid = (int)TempData["UserId"];
+            var user = _userManager.Users.FirstOrDefault(x => x.Id == userid);
+            foreach (var item in model) {
+                if (item.Exists)
+                {
+                    await _userManager.AddToRoleAsync(user, item.Name);
 
-	}
+                }
+                else { 
+                    await _userManager.RemoveFromRoleAsync(user, item.Name);
+                }
+            }
+            return RedirectToAction("UserRoleList");
+        }
+
+
+    }
 }

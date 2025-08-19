@@ -12,13 +12,9 @@ namespace CoreDemo.ViewComponents.Writer
     public class WriterAboutOnDashboard :ViewComponent
     {
         WriterManager wm = new WriterManager(new EfWriterRepository());
-        private readonly UserManager<AppUser> _userManager;
         Context c = new Context();
 
-        public WriterAboutOnDashboard(UserManager<AppUser> userManager)
-        {
-            _userManager = userManager;
-        }
+       
 
         public IViewComponentResult Invoke()
         {

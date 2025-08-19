@@ -14,7 +14,7 @@
                 <h4 class="card-title"> Yazar Profil Bilgileri Düzenleme</h4>
                 <br/>
                 @* @Html.HiddenFor(x=>x.Id, new {@class ="form-control"}) *@
-                <form class="forms-sample" method="post">
+            <form class="forms-sample" method="post" enctype="multipart/form-data">
                     <div class="form-group">
                         <label for="exampleInputName1">Yazar Ad Soyad</label>
                         <input type="text" asp-for="@Model.namesurname" class="form-control" />
@@ -44,11 +44,24 @@
                     <input type="text" asp-for="@Model.password" class="form-control" />
 
                 </div>
-                    <div class="form-group">
+                <div class="form-group">
+                    <div class="col-md-5">
+                        <img src="@Model.imageurl" class="img-fluid" alt="Profil Resmi" />
+                    </div>
+
+                    <label for="imageUpload">Resim Yükle</label>
+                    <input type="file" asp-for="Image" class="form-control" />
+
+                    <input type="hidden" asp-for="imageurl" /> <!-- Eski resim kalabilsin diye -->
+                </div>
+                    @* <div class="form-group">
+                    <div class="col-md-5">
+                        <img src="@Model.imageurl" class="img-fluid" alt="Profil Resmi" />
+                    </div>
                     <label for="exampleInputPassword4">Resim yolu</label>
                         <input type="text" asp-for="@Model.imageurl" class="form-control" />
 
-                    </div>
+                    </div> *@
                     @* <div class="form-group">
                         <label for="exampleInputPassword4">Parola</label>
                          <input type="password" class="form-control" id="exampleInputPassword4" asp-for="PasswordHash" name="pass1" placeholder="Password"> 

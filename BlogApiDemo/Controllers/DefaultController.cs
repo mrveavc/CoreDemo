@@ -64,6 +64,7 @@ namespace BlogApiDemo.Controllers
         {
             using var c= new ApiContext();
             var emp = c.Find<Employee>(employee.ID);
+            //var emp = c.Employees.Find(employee.ID);
             if (emp == null)
             {
                 return NotFound();

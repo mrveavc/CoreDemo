@@ -56,7 +56,28 @@
 
                             <div class="mail-body">
 
-                                <form method="post">
+                        @using (Html.BeginForm("ComposeMessage", "AdminMessage", FormMethod.Post))
+                        {
+                            @Html.Label("Alıcı")
+
+
+                            <label for="ReceiverID">Alıcı Seçimi</label>
+                            @Html.DropDownListFor(x => x.ReceiverID, (List<SelectListItem>)ViewBag.RecieverUser, new { @class = "form-control" })
+                            <br />
+                            @Html.Label("Konu")
+                            @Html.TextBoxFor(x => x.Subject, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(x => x.Subject)
+                            <br />
+
+                            @Html.Label("Mesajınız")
+                            @Html.TextAreaFor(x => x.MessageDetails, 15, 3, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(x => x.MessageDetails)
+                            <br />
+                            <button class="btn btn-info">Mesajı Gönder</button>
+
+
+                        }
+                               @*  <form method="post">
                                     <div class="form-group row">
                                         <label class="col-sm-2 col-form-label">Alıcı:</label>
 
@@ -73,7 +94,7 @@
                                         <textarea class="form-control" name="MessageDetails" rows="4" cols="10"></textarea>
                                     </div>
                                     <button>Gönder</button>
-                                </form>
+                                </form> *@
 
                             </div>
 

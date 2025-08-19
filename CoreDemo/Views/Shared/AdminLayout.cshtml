@@ -24,7 +24,8 @@
 
     <div id="wrapper">
 
-        @await Html.PartialAsync("~/Views/Admin/AdminNavbarPartial.cshtml")
+        @* @await Html.PartialAsync("~/Views/Admin/AdminNavbarPartial.cshtml") *@
+        @await Component.InvokeAsync("AdminNavbar")
         <div id="page-wrapper" class="gray-bg">
             <div class="row border-bottom">
                 <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
@@ -192,7 +193,7 @@
             });
         });
     </script>
-    @* @await RenderSectionAsync("scripts") *@
+    @await RenderSectionAsync("scripts", required: false) @*layout'u kullanan her viewde scripts kullanılmayacağı için false yaptık*@
 
 </body>
 

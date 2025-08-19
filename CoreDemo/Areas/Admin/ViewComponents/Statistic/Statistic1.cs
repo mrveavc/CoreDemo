@@ -18,7 +18,7 @@ namespace CoreDemo.Areas.Admin.ViewComponents.Statistic
             ViewBag.v2=c.Contacts.Count();
             ViewBag.v3=c.Comments.Count();
             string api = "7fcac3bbb3e4ef4a16ece8578c97f467";
-            string connection = "https://api.openweathermap.org/data/2.5/weather?q=istanbul&mode=xml&lang=tr&units=metric&appid=" + api;
+            string connection = "https://api.openweathermap.org/data/2.5/weather?q=ankara&mode=xml&lang=tr&units=metric&appid=" + api;
             XDocument document = XDocument.Load(connection);
             ViewBag.v4 = document.Descendants("temperature").ElementAt(0).Attribute("value").Value;
             ViewBag.v5 = document.Descendants("city").ElementAt(0).Attribute("name").Value;

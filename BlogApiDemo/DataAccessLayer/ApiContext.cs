@@ -1,4 +1,5 @@
 ﻿
+using EntityLayer.Concrete;
 using Microsoft.EntityFrameworkCore;
 namespace BlogApiDemo.DataAccessLayer
 {
@@ -8,6 +9,7 @@ namespace BlogApiDemo.DataAccessLayer
         {
 
             optionsBuilder.UseSqlServer("Server=DESKTOP-KMBI23L\\SQLEXPRESS;Database=CoreBlogApiDb;TrustServerCertificate=true;Integrated Security=true;");
+            
         }
         public DbSet<Employee> Employees { get; set; }
     }

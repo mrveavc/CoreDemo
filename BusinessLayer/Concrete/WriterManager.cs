@@ -35,7 +35,7 @@ namespace BusinessLayer.Concrete
 
         public void TDelete(Writer t)
         {
-            throw new NotImplementedException();
+            _writerDal.Delete(t);
         }
 
         public Writer TGetById(int id)

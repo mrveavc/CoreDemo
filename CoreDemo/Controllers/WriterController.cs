@@ -49,12 +49,13 @@ namespace CoreDemo.Controllers
 		{
 			return View();
 		}
-        [AllowAnonymous]
+  //      [AllowAnonymous]
 
-        public PartialViewResult WriterNavbarPartial()
-		{
-			return PartialView();
-		}
+  //      public PartialViewResult WriterNavbarPartial()
+		//{
+		//	return PartialView();
+		//}
+
         [AllowAnonymous]
 
         public PartialViewResult WriterFooterPartial()
@@ -70,6 +71,7 @@ namespace CoreDemo.Controllers
             //var writerID = c.Writers.Where(x => x.WriterMail == usermail).Select(y => y.WriterID).FirstOrDefault();
             //var writervalues = wm.TGetById(writerID);
             //return View(writervalues);
+
             //var id = c.Users.Where(x => x.Email == usermail).Select(x => x.Id).FirstOrDefault();
             //var values = userManager.TGetById(id);
             //return View(values);
@@ -85,15 +87,29 @@ namespace CoreDemo.Controllers
         [HttpPost]
         public async Task<IActionResult> WriterEditProfile(UserUpdateViewModel model)
         {
+          
             var values = await _userManager.FindByNameAsync(User.Identity.Name);
             values.NameSurname=model.namesurname;
             values.UserName=model.username;
-            values.ImageUrl=model.imageurl;
+            //values.ImageUrl=model.imageurl;
             values.Email = model.mail;
             values.PasswordHash = _userManager.PasswordHasher.HashPassword(values,model.password);
+            if (model.Image != null)
+            {
+                var extension = Path.GetExtension(model.Image.FileName); // .jpg, .png vs.
+                var newImageName = Guid.NewGuid() + extension; // benzersiz isim
+                var saveLocation = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/WriterImageFiles", newImageName);
+
+                using (var stream = new FileStream(saveLocation, FileMode.Create))
+                {
+                    await model.Image.CopyToAsync(stream);
+                }
+
+                values.ImageUrl = "/WriterImageFiles/" + newImageName;
+            }
             var result = await  _userManager.UpdateAsync(values);
 
-            return RedirectToAction("Index","Dashboard");
+            return RedirectToAction("Index","Login");
             //var pas1 = Request.Form["pass1"];
             //var pas2 = Request.Form["pass2"];
             //if (pas1 == pas2)

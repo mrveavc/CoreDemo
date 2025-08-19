@@ -1,6 +1,6 @@
 ﻿@model EntityLayer.Concrete.Category
 @{
-    ViewData["Title"] = "AddCategory";
+    ViewData["Title"] = "CategoryAdd";
     Layout = "~/Views/Shared/AdminLayout.cshtml";
 }
 
@@ -8,7 +8,7 @@
 <h1>Yeni Kategori Girişi</h1>
 <br />
 
-@using (Html.BeginForm("AddCategory", "Category", FormMethod.Post))
+@using (Html.BeginForm("CategoryAdd", "Category", FormMethod.Post))
 {
     @Html.Label("Kategori Adı")
     @Html.TextBoxFor(x=>x.CategoryName,new {@class="form-control"})
